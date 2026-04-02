@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PD Card Designer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Montserrat',sans-serif;background:#0a0a0a;color:white}
+header{background:linear-gradient(90deg,#c40000,#ff1a1a);padding:14px;text-align:center;font-weight:700;letter-spacing:4px}
+.container{display:flex;gap:40px;padding:30px;justify-content:center;flex-wrap:wrap}
+.form{width:320px;background:#141414;padding:20px;border-radius:12px}
+.form input,.form select{width:100%;margin:8px 0;padding:10px;border-radius:8px;border:none;background:#1f1f1f;color:white}
+.card{width:740px;height:420px;background:linear-gradient(135deg,#e8e4dc,#d6d1c7);border-radius:35px;padding:30px;position:relative;color:#222;box-shadow:0 10px 40px rgba(0,0,0,.7)}
+.top-title{text-align:center;font-weight:700;letter-spacing:5px}
+.photo{position:absolute;left:40px;top:90px;width:140px;height:140px;border-radius:12px;object-fit:cover;border:3px solid #aaa}
+.badge{position:absolute;left:40px;bottom:80px;width:120px}
+.main-info{position:absolute;left:220px;top:100px}
+.main-info h1{margin:0;font-size:36px}
+.main-info h2{margin:5px 0;font-size:20px;color:#444}
+.callsign{font-weight:600;letter-spacing:2px}
+.extra{margin-top:10px;font-size:14px}
+.bottom-info{position:absolute;bottom:20px;left:40px;font-size:13px}
+.footer{position:absolute;bottom:20px;right:40px;font-size:12px;opacity:.6}
+button{padding:12px 25px;background:linear-gradient(90deg,#c40000,#ff1a1a);border:none;color:white;border-radius:8px;cursor:pointer}
+.download{text-align:center;margin-bottom:30px}
+</style>
+</head>
+<body>
+<header>PD CARD DESIGNER</header>
+<div class="container">
+<div class="form">
+<input id="name" placeholder="Name">
+<input id="rank" placeholder="Rank">
+<input id="callsign" placeholder="Callsign">
+<input id="badgeNum" placeholder="Badge Number">
+<input id="cell" placeholder="Cell">
+<input id="email" placeholder="Email">
+<input id="address" placeholder="Address (Mission Row)">
+
+<select id="dept">
+<option>METRO POLICE DEPARTMENT</option>
+<option>LOS SANTOS SHERIFF</option>
+<option>STATE TROOPER</option>
+</select>
+
+<select id="theme">
+<option value="default">Default</option>
+<option value="dark">Dark Card</option>
+<option value="blue">Blue Card</option>
+</select>
+
+<label>Photo</label>
+<input type="file" id="photoUpload">
+
+<label>Badge</label>
+<input type="file" id="badgeUpload">
+</div>
+
+<div class="card" id="card">
+<div class="top-title" id="cardDept">METRO POLICE DEPARTMENT</div>
+
+<img id="cardPhoto" class="photo" style="display:none">
+<img id="cardBadge" class="badge" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Police_badge.svg/512px-Police_badge.svg.png">
+
+<div class="main-info">
+<h1 id="cardName">John Doe</h1>
+<h2 id="cardRank">Officer</h2>
+<div class="callsign" id="cardCallsign">6-M-10</div>
+<div class="extra" id="cardBadgeNum">Badge: 0000</div>
+<div class="extra" id="cardAddress">Mission Row</div>
+</div>
+
+<div class="bottom-info">
+<div id="cardCell">Cell:</div>
+<div id="cardEmail">Email:</div>
+</div>
+
+<div class="footer">LOS SANTOS</div>
+</div>
+</div>
+
+<div class="download">
+<button onclick="downloadCard()">Download</button>
+</div>
+
+<script>
+const ids=["name","rank","callsign","badgeNum","cell","email","address"];
+ids.forEach(id=>document.getElementById(id).addEventListener("input",update));
+
+dept.onchange=update;
+theme.onchange=update;
+
+function update(){
+cardName.innerText=name.value||"John Doe";
+cardRank.innerText=rank.value||"Officer";
+cardCallsign.innerText=callsign.value||"6-M-10";
+cardBadgeNum.innerText="Badge: "+(badgeNum.value||"0000");
+cardAddress.innerText=address.value||"Mission Row";
+cardCell.innerText=cell.value?"Cell: "+cell.value:"";
+cardEmail.innerText=email.value?"Email: "+email.value:"";
+cardDept.innerText=dept.value;
+
+if(theme.value==="dark"){
+card.style.background="#333";card.style.color="#fff";
+}else if(theme.value==="blue"){
+card.style.background="#1e2f4d";card.style.color="#fff";
+}else{
+card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)";card.style.color="#222";
+}
+}
+
+photoUpload.onchange=e=>{
+const f=e.target.files[0];if(!f)return;
+const r=new FileReader();r.onload=x=>{cardPhoto.src=x.target.result;cardPhoto.style.display="block"};r.readAsDataURL(f);
+};
+
+badgeUpload.onchange=e=>{
+const f=e.target.files[0];if(!f)return;
+const r=new FileReader();r.onload=x=>{cardBadge.src=x.target.result};r.readAsDataURL(f);
+};
+
+function downloadCard(){
+html2canvas(card).then(c=>{
+const a=document.createElement("a");a.download="card.png";a.href=c.toDataURL();a.click();
+});
+}
+</script>
+</body>
+</html>
