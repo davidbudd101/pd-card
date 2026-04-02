@@ -1,84 +1,301 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PD Card Designer</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;font-family:'Montserrat',sans-serif;background:#0a0a0a;color:white}
-header{background:linear-gradient(90deg,#c40000,#ff1a1a);padding:14px;text-align:center;font-weight:700;letter-spacing:4px}
-.container{display:flex;gap:40px;padding:30px;justify-content:center;flex-wrap:wrap}
-.form{width:320px;background:#141414;padding:20px;border-radius:12px}
-.form input,.form select{width:100%;margin:8px 0;padding:10px;border-radius:8px;border:none;background:#1f1f1f;color:white}
-.card{width:740px;height:420px;background:linear-gradient(135deg,#e8e4dc,#d6d1c7);border-radius:35px;padding:30px;position:relative;color:#222;box-shadow:0 10px 40px rgba(0,0,0,.7)}
-.top-title{text-align:center;font-weight:700;letter-spacing:5px}
-.photo{position:absolute;left:40px;top:90px;width:140px;height:140px;border-radius:12px;object-fit:cover;border:3px solid #aaa}
-.badge{position:absolute;left:40px;bottom:80px;width:120px}
-.main-info{position:absolute;left:220px;top:100px}
-.main-info h1{margin:0;font-size:36px}
-.main-info h2{margin:5px 0;font-size:20px;color:#444}
-.callsign{font-weight:600;letter-spacing:2px}
-.extra{margin-top:10px;font-size:14px}
-.bottom-info{position:absolute;bottom:20px;left:40px;font-size:13px}
-.footer{position:absolute;bottom:20px;right:40px;font-size:12px;opacity:.6}
-button{padding:12px 25px;background:linear-gradient(90deg,#c40000,#ff1a1a);border:none;color:white;border-radius:8px;cursor:pointer}
-.download{text-align:center;margin-bottom:30px}
+
+body{
+margin:0;
+font-family:'Montserrat',sans-serif;
+background:#0a0a0a;
+color:white
+}
+
+header{
+background:linear-gradient(90deg,#c40000,#ff1a1a);
+padding:14px;
+text-align:center;
+font-weight:700;
+letter-spacing:4px
+}
+
+.container{
+display:flex;
+gap:40px;
+padding:30px;
+justify-content:center;
+flex-wrap:wrap
+}
+
+.form{
+width:320px;
+background:#141414;
+padding:20px;
+border-radius:12px
+}
+
+.form input,.form select{
+width:100%;
+margin:8px 0;
+padding:10px;
+border-radius:8px;
+border:none;
+background:#1f1f1f;
+color:white
+}
+
+.card{
+width:740px;
+height:420px;
+background:linear-gradient(135deg,#e8e4dc,#d6d1c7);
+border-radius:35px;
+padding:30px;
+position:relative;
+color:#222;
+box-shadow:0 10px 40px rgba(0,0,0,.7);
+overflow:hidden
+}
+
+/* HOLOGRAM */
+
+.hologram{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+linear-gradient(45deg,
+rgba(255,0,0,0.1),
+rgba(0,255,255,0.1),
+rgba(255,255,0,0.1));
+mix-blend-mode:overlay;
+pointer-events:none;
+opacity:.35
+}
+
+/* SCRATCHES */
+
+.scratches{
+position:absolute;
+width:100%;
+height:100%;
+background:url("https://www.transparenttextures.com/patterns/scratched-metal.png");
+opacity:.15;
+pointer-events:none
+}
+
+/* WORN CARD */
+
+.worn-card{
+filter:contrast(95%) brightness(95%);
+transform:rotate(-1deg)
+}
+
+/* PHOTO */
+
+.photo{
+position:absolute;
+left:40px;
+top:90px;
+width:140px;
+height:140px;
+border-radius:12px;
+object-fit:cover;
+border:3px solid #aaa;
+cursor:move
+}
+
+/* BADGE */
+
+.badge{
+position:absolute;
+left:40px;
+bottom:80px;
+width:120px;
+filter:drop-shadow(0 3px 3px rgba(0,0,0,.6));
+}
+
+.badge::after{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(45deg,rgba(255,255,255,.5),transparent);
+mix-blend-mode:overlay
+}
+
+.top-title{
+text-align:center;
+font-weight:700;
+letter-spacing:5px
+}
+
+.main-info{
+position:absolute;
+left:220px;
+top:100px
+}
+
+.main-info h1{
+margin:0;
+font-size:36px
+}
+
+.main-info h2{
+margin:5px 0;
+font-size:20px;
+color:#444
+}
+
+.callsign{
+font-weight:600;
+letter-spacing:2px
+}
+
+.extra{
+margin-top:10px;
+font-size:14px
+}
+
+.bottom-info{
+position:absolute;
+bottom:60px;
+left:40px;
+font-size:13px
+}
+
+/* BARCODE */
+
+.barcode{
+position:absolute;
+bottom:20px;
+left:40px;
+height:40px;
+width:260px;
+background:
+repeating-linear-gradient(
+90deg,
+#000,
+#000 2px,
+#fff 2px,
+#fff 4px
+)
+}
+
+.barcode-id{
+position:absolute;
+bottom:20px;
+left:320px;
+font-size:14px;
+letter-spacing:3px
+}
+
+.footer{
+position:absolute;
+bottom:20px;
+right:40px;
+font-size:12px;
+opacity:.6
+}
+
+button{
+padding:12px 25px;
+background:linear-gradient(90deg,#c40000,#ff1a1a);
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer
+}
+
+.download{
+text-align:center;
+margin-bottom:30px
+}
+
 </style>
+
 </head>
+
 <body>
+
 <header>PD CARD DESIGNER</header>
+
 <div class="container">
+
 <div class="form">
+
 <input id="name" placeholder="Name">
 <input id="rank" placeholder="Rank">
 <input id="callsign" placeholder="Callsign">
 <input id="badgeNum" placeholder="Badge Number">
 <input id="cell" placeholder="Cell">
 <input id="email" placeholder="Email">
-<input id="address" placeholder="Address (Mission Row)">
+<input id="address" placeholder="Address">
 
 <select id="dept">
-<option>METRO POLICE DEPARTMENT</option>
+<option>LOS SANTOS POLICE DEPARTMENT</option>
 <option>LOS SANTOS SHERIFF</option>
 <option>STATE TROOPER</option>
 </select>
 
 <select id="theme">
 <option value="default">Default</option>
-<option value="dark">Dark Card</option>
-<option value="blue">Blue Card</option>
+<option value="dark">Dark</option>
+<option value="blue">Blue</option>
+<option value="worn">Worn</option>
 </select>
 
-<label>Photo</label>
-<input type="file" id="photoUpload">
+<label>Photo</label> <input type="file" id="photoUpload">
 
-<label>Badge</label>
-<input type="file" id="badgeUpload">
+<label>Badge</label> <input type="file" id="badgeUpload">
+
 </div>
 
 <div class="card" id="card">
-<div class="top-title" id="cardDept">METRO POLICE DEPARTMENT</div>
 
-<img id="cardPhoto" class="photo" style="display:none">
-<img id="cardBadge" class="badge" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Police_badge.svg/512px-Police_badge.svg.png">
+<div class="hologram"></div>
+<div class="scratches"></div>
+
+<div class="top-title" id="cardDept">LOS SANTOS POLICE DEPARTMENT</div>
+
+<img id="cardPhoto" class="photo">
+
+<img id="cardBadge" class="badge"
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Police_badge.svg/512px-Police_badge.svg.png">
 
 <div class="main-info">
+
 <h1 id="cardName">John Doe</h1>
 <h2 id="cardRank">Officer</h2>
 <div class="callsign" id="cardCallsign">6-M-10</div>
 <div class="extra" id="cardBadgeNum">Badge: 0000</div>
 <div class="extra" id="cardAddress">Mission Row</div>
+
 </div>
 
 <div class="bottom-info">
-<div id="cardCell">Cell:</div>
-<div id="cardEmail">Email:</div>
+<div id="cardCell"></div>
+<div id="cardEmail"></div>
 </div>
 
+<div class="barcode"></div>
+<div class="barcode-id" id="barcodeID">000000000</div>
+
 <div class="footer">LOS SANTOS</div>
+
 </div>
+
 </div>
 
 <div class="download">
@@ -86,80 +303,133 @@ button{padding:12px 25px;background:linear-gradient(90deg,#c40000,#ff1a1a);borde
 </div>
 
 <script>
-const ids=["name","rank","callsign","badgeNum","cell","email","address"];
-ids.forEach(id=>document.getElementById(id).addEventListener("input",update));
 
-dept.onchange=update;
-theme.onchange=update;
+const ids=["name","rank","callsign","badgeNum","cell","email","address"]
+
+ids.forEach(id=>{
+document.getElementById(id).addEventListener("input",update)
+})
+
+document.getElementById("dept").addEventListener("change",update)
+document.getElementById("theme").addEventListener("change",update)
 
 function update(){
-  document.getElementById("cardName").innerText =
-    document.getElementById("name").value || "John Doe";
 
-  document.getElementById("cardRank").innerText =
-    document.getElementById("rank").value || "Officer";
+document.getElementById("cardName").innerText=
+document.getElementById("name").value||"John Doe"
 
-  document.getElementById("cardCallsign").innerText =
-    document.getElementById("callsign").value || "6-M-10";
+document.getElementById("cardRank").innerText=
+document.getElementById("rank").value||"Officer"
 
-  document.getElementById("cardBadgeNum").innerText =
-    "Badge: " + (document.getElementById("badgeNum").value || "0000");
+document.getElementById("cardCallsign").innerText=
+document.getElementById("callsign").value||"6-M-10"
 
-  document.getElementById("cardAddress").innerText =
-    document.getElementById("address").value || "Mission Row";
+document.getElementById("cardBadgeNum").innerText=
+"Badge: "+(document.getElementById("badgeNum").value||"0000")
 
-  document.getElementById("cardCell").innerText =
-    document.getElementById("cell").value
-      ? "Cell: " + document.getElementById("cell").value
-      : "";
+document.getElementById("cardAddress").innerText=
+document.getElementById("address").value||"Mission Row"
 
-  document.getElementById("cardEmail").innerText =
-    document.getElementById("email").value
-      ? "Email: " + document.getElementById("email").value
-      : "";
+document.getElementById("cardCell").innerText=
+document.getElementById("cell").value?
+"Cell: "+document.getElementById("cell").value:""
 
-  document.getElementById("cardDept").innerText =
-    document.getElementById("dept").value;
+document.getElementById("cardEmail").innerText=
+document.getElementById("email").value?
+"Email: "+document.getElementById("email").value:""
 
-  const theme = document.getElementById("theme").value;
-  const card = document.getElementById("card");
+document.getElementById("cardDept").innerText=
+document.getElementById("dept").value
 
-  if(theme === "dark"){
-    card.style.background = "#333";
-    card.style.color = "#fff";
-  } else if(theme === "blue"){
-    card.style.background = "#1e2f4d";
-    card.style.color = "#fff";
-  } else {
-    card.style.background = "linear-gradient(135deg,#e8e4dc,#d6d1c7)";
-    card.style.color = "#222";
-  }
+document.getElementById("barcodeID").innerText=
+(document.getElementById("badgeNum").value||"0000")+"-"+Math.floor(Math.random()*9999)
+
+const theme=document.getElementById("theme").value
+const card=document.getElementById("card")
+
+card.classList.remove("worn-card")
+
+if(theme==="dark"){
+card.style.background="#333"
+card.style.color="#fff"
+}
+else if(theme==="blue"){
+card.style.background="#1e2f4d"
+card.style.color="#fff"
+}
+else if(theme==="worn"){
+card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)"
+card.style.color="#222"
+card.classList.add("worn-card")
+}
+else{
+card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)"
+card.style.color="#222"
 }
 
-if(theme.value==="dark"){
-card.style.background="#333";card.style.color="#fff";
-}else if(theme.value==="blue"){
-card.style.background="#1e2f4d";card.style.color="#fff";
-}else{
-card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)";card.style.color="#222";
 }
-}
+
+/* PHOTO UPLOAD */
 
 photoUpload.onchange=e=>{
-const f=e.target.files[0];if(!f)return;
-const r=new FileReader();r.onload=x=>{cardPhoto.src=x.target.result;cardPhoto.style.display="block"};r.readAsDataURL(f);
-};
+const f=e.target.files[0]
+if(!f)return
+const r=new FileReader()
+r.onload=x=>{
+cardPhoto.src=x.target.result
+}
+r.readAsDataURL(f)
+}
+
+/* BADGE UPLOAD */
 
 badgeUpload.onchange=e=>{
-const f=e.target.files[0];if(!f)return;
-const r=new FileReader();r.onload=x=>{cardBadge.src=x.target.result};r.readAsDataURL(f);
-};
+const f=e.target.files[0]
+if(!f)return
+const r=new FileReader()
+r.onload=x=>{
+cardBadge.src=x.target.result
+}
+r.readAsDataURL(f)
+}
+
+/* DRAG + RESIZE PHOTO */
+
+interact('.photo')
+.draggable({
+listeners:{
+move(event){
+let x=(parseFloat(event.target.getAttribute('data-x'))||0)+event.dx
+let y=(parseFloat(event.target.getAttribute('data-y'))||0)+event.dy
+event.target.style.transform=`translate(${x}px,${y}px)`
+event.target.setAttribute('data-x',x)
+event.target.setAttribute('data-y',y)
+}
+}
+})
+.resizable({
+edges:{left:true,right:true,bottom:true,top:true}
+})
+.on('resizemove',event=>{
+let target=event.target
+target.style.width=event.rect.width+'px'
+target.style.height=event.rect.height+'px'
+})
 
 function downloadCard(){
-html2canvas(card).then(c=>{
-const a=document.createElement("a");a.download="card.png";a.href=c.toDataURL();a.click();
-});
+
+html2canvas(document.getElementById("card")).then(canvas=>{
+
+const a=document.createElement("a")
+a.download="card.png"
+a.href=canvas.toDataURL()
+a.click()
+
+})
+
 }
+
 </script>
+
 </body>
 </html>
