@@ -93,14 +93,48 @@ dept.onchange=update;
 theme.onchange=update;
 
 function update(){
-cardName.innerText=name.value||"John Doe";
-cardRank.innerText=rank.value||"Officer";
-cardCallsign.innerText=callsign.value||"6-M-10";
-cardBadgeNum.innerText="Badge: "+(badgeNum.value||"0000");
-cardAddress.innerText=address.value||"Mission Row";
-cardCell.innerText=cell.value?"Cell: "+cell.value:"";
-cardEmail.innerText=email.value?"Email: "+email.value:"";
-cardDept.innerText=dept.value;
+  document.getElementById("cardName").innerText =
+    document.getElementById("name").value || "John Doe";
+
+  document.getElementById("cardRank").innerText =
+    document.getElementById("rank").value || "Officer";
+
+  document.getElementById("cardCallsign").innerText =
+    document.getElementById("callsign").value || "6-M-10";
+
+  document.getElementById("cardBadgeNum").innerText =
+    "Badge: " + (document.getElementById("badgeNum").value || "0000");
+
+  document.getElementById("cardAddress").innerText =
+    document.getElementById("address").value || "Mission Row";
+
+  document.getElementById("cardCell").innerText =
+    document.getElementById("cell").value
+      ? "Cell: " + document.getElementById("cell").value
+      : "";
+
+  document.getElementById("cardEmail").innerText =
+    document.getElementById("email").value
+      ? "Email: " + document.getElementById("email").value
+      : "";
+
+  document.getElementById("cardDept").innerText =
+    document.getElementById("dept").value;
+
+  const theme = document.getElementById("theme").value;
+  const card = document.getElementById("card");
+
+  if(theme === "dark"){
+    card.style.background = "#333";
+    card.style.color = "#fff";
+  } else if(theme === "blue"){
+    card.style.background = "#1e2f4d";
+    card.style.color = "#fff";
+  } else {
+    card.style.background = "linear-gradient(135deg,#e8e4dc,#d6d1c7)";
+    card.style.color = "#222";
+  }
+}
 
 if(theme.value==="dark"){
 card.style.background="#333";card.style.color="#fff";
