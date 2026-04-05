@@ -10,15 +10,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Great+Vibes&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
-font-family:'Montserrat',sans-serif;
+font-family:'Oswald',sans-serif;
 background:#0a0a0a;
-color:white
+color:white;
 }
 
 header{
@@ -26,7 +26,7 @@ background:linear-gradient(90deg,#c40000,#ff1a1a);
 padding:14px;
 text-align:center;
 font-weight:700;
-letter-spacing:4px
+letter-spacing:4px;
 }
 
 .container{
@@ -34,14 +34,14 @@ display:flex;
 gap:40px;
 padding:30px;
 justify-content:center;
-flex-wrap:wrap
+flex-wrap:wrap;
 }
 
 .form{
 width:320px;
 background:#141414;
 padding:20px;
-border-radius:12px
+border-radius:12px;
 }
 
 .form input,.form select{
@@ -51,10 +51,8 @@ padding:10px;
 border-radius:8px;
 border:none;
 background:#1f1f1f;
-color:white
+color:white;
 }
-
-/* CARD */
 
 .card{
 width:740px;
@@ -65,10 +63,10 @@ padding:30px;
 position:relative;
 color:#222;
 box-shadow:0 10px 40px rgba(0,0,0,.7);
-overflow:hidden
+overflow:hidden;
 }
 
-/* FAINT HOLOGRAM */
+/* hologram */
 
 .hologram-bg{
 position:absolute;
@@ -76,14 +74,16 @@ width:120%;
 height:120%;
 left:-10%;
 top:-10%;
-background:linear-gradient(120deg,
+background:linear-gradient(
+120deg,
 rgba(255,0,0,.05),
 rgba(255,255,0,.05),
 rgba(0,255,255,.05),
-rgba(0,0,255,.05));
+rgba(0,0,255,.05)
+);
 mix-blend-mode:overlay;
-animation:holoMove 12s linear infinite;
-pointer-events:none
+animation:holoMove 10s linear infinite;
+pointer-events:none;
 }
 
 @keyframes holoMove{
@@ -92,7 +92,7 @@ pointer-events:none
 100%{transform:translateX(-10%)}
 }
 
-/* SCRATCHES */
+/* scratches */
 
 .scratches{
 position:absolute;
@@ -100,15 +100,10 @@ width:100%;
 height:100%;
 background:url("https://www.transparenttextures.com/patterns/scratched-metal.png");
 opacity:.10;
-pointer-events:none
+pointer-events:none;
 }
 
-.worn-card{
-filter:contrast(92%) brightness(92%);
-transform:rotate(-0.8deg)
-}
-
-/* PHOTO */
+/* photo */
 
 .photo{
 position:absolute;
@@ -119,64 +114,58 @@ height:140px;
 border-radius:12px;
 object-fit:cover;
 border:3px solid #aaa;
-cursor:move
+cursor:move;
 }
 
-/* BADGE */
+/* badge */
 
 .badge{
 position:absolute;
 left:40px;
 bottom:80px;
 width:120px;
-filter:drop-shadow(0 3px 3px rgba(0,0,0,.6))
+filter:drop-shadow(0 3px 3px rgba(0,0,0,.6));
 }
 
-/* POLICE STYLE TEXT */
+/* title */
 
 .top-title{
 text-align:center;
-font-family:'Oswald',sans-serif;
-font-weight:700;
+font-size:22px;
 letter-spacing:4px;
-font-size:22px
+font-weight:700;
 }
+
+/* main info */
 
 .main-info{
 position:absolute;
 left:220px;
-top:95px
+top:95px;
 }
 
 .main-info h1{
 margin:0;
-font-family:'Oswald',sans-serif;
 font-size:40px;
-font-weight:700;
-letter-spacing:1px
 }
 
 .main-info h2{
 margin:4px 0;
-font-family:'Oswald',sans-serif;
 font-size:22px;
-font-weight:600
 }
 
 .callsign{
-font-family:'Oswald',sans-serif;
-font-weight:700;
 letter-spacing:3px;
-font-size:18px
+font-weight:700;
 }
 
 .extra{
 margin-top:8px;
 font-size:15px;
-font-weight:600
+font-weight:600;
 }
 
-/* MOVED CONTACT INFO */
+/* contact info moved */
 
 .bottom-info{
 position:absolute;
@@ -184,10 +173,10 @@ bottom:100px;
 right:40px;
 text-align:right;
 font-size:14px;
-font-weight:600
+font-weight:600;
 }
 
-/* BARCODE */
+/* barcode */
 
 .barcode{
 position:absolute;
@@ -200,7 +189,8 @@ background:repeating-linear-gradient(
 #000,
 #000 2px,
 #fff 2px,
-#fff 4px)
+#fff 4px
+);
 }
 
 .barcode-id{
@@ -208,10 +198,10 @@ position:absolute;
 bottom:20px;
 left:320px;
 font-size:14px;
-letter-spacing:3px
+letter-spacing:3px;
 }
 
-/* SIGNATURE */
+/* signature */
 
 .signature-strip{
 position:absolute;
@@ -222,7 +212,7 @@ text-align:center;
 border-top:2px solid #222;
 padding-top:5px;
 font-family:'Great Vibes',cursive;
-font-size:24px
+font-size:24px;
 }
 
 .footer{
@@ -230,7 +220,7 @@ position:absolute;
 bottom:20px;
 right:40px;
 font-size:12px;
-opacity:.6
+opacity:.6;
 }
 
 button{
@@ -239,12 +229,12 @@ background:linear-gradient(90deg,#c40000,#ff1a1a);
 border:none;
 color:white;
 border-radius:8px;
-cursor:pointer
+cursor:pointer;
 }
 
 .download{
 text-align:center;
-margin-bottom:30px
+margin-bottom:30px;
 }
 
 </style>
@@ -259,7 +249,7 @@ margin-bottom:30px
 
 <div class="form">
 
-<input id="name" placeholder="Name">
+<input id="name" placeholder="Officer Name">
 <input id="rank" placeholder="Rank">
 <input id="callsign" placeholder="Callsign">
 <input id="badgeNum" placeholder="Badge Number">
@@ -271,13 +261,6 @@ margin-bottom:30px
 <option>LOS SANTOS POLICE DEPARTMENT</option>
 <option>LOS SANTOS SHERIFF</option>
 <option>STATE TROOPER</option>
-</select>
-
-<select id="theme">
-<option value="default">Default</option>
-<option value="dark">Dark</option>
-<option value="blue">Blue</option>
-<option value="worn">Worn</option>
 </select>
 
 <label>Photo</label> <input type="file" id="photoUpload">
@@ -331,53 +314,82 @@ Chief David Budd
 
 <script>
 
-const ids=["name","rank","callsign","badgeNum","cell","email","address"]
+/* UPDATE CARD TEXT */
 
-ids.forEach(id=>{
+const fields=["name","rank","callsign","badgeNum","cell","email","address"]
+
+fields.forEach(id=>{
 document.getElementById(id).addEventListener("input",update)
 })
 
-dept.onchange=update
-theme.onchange=update
+document.getElementById("dept").addEventListener("change",update)
 
 function update(){
 
-cardName.innerText=name.value||"John Doe"
-cardRank.innerText=rank.value||"Officer"
-cardCallsign.innerText=callsign.value||"6-M-10"
-cardBadgeNum.innerText="Badge: "+(badgeNum.value||"0000")
-cardAddress.innerText=address.value||"Mission Row"
+document.getElementById("cardName").innerText=
+document.getElementById("name").value || "John Doe"
 
-cardCell.innerText=cell.value?"Cell: "+cell.value:""
-cardEmail.innerText=email.value?"Email: "+email.value:""
+document.getElementById("cardRank").innerText=
+document.getElementById("rank").value || "Officer"
 
-cardDept.innerText=dept.value
+document.getElementById("cardCallsign").innerText=
+document.getElementById("callsign").value || "6-M-10"
 
-barcodeID.innerText=(badgeNum.value||"0000")+"-"+Math.floor(Math.random()*9999)
+document.getElementById("cardBadgeNum").innerText=
+"Badge: " + (document.getElementById("badgeNum").value || "0000")
+
+document.getElementById("cardAddress").innerText=
+document.getElementById("address").value || "Mission Row"
+
+document.getElementById("cardCell").innerText=
+document.getElementById("cell").value
+? "Cell: " + document.getElementById("cell").value : ""
+
+document.getElementById("cardEmail").innerText=
+document.getElementById("email").value
+? "Email: " + document.getElementById("email").value : ""
+
+document.getElementById("cardDept").innerText=
+document.getElementById("dept").value
+
+document.getElementById("barcodeID").innerText=
+(document.getElementById("badgeNum").value || "0000") +
+"-" + Math.floor(Math.random()*9999)
 
 }
 
-photoUpload.onchange=e=>{
-const f=e.target.files[0]
-if(!f)return
-const r=new FileReader()
-r.onload=x=>{cardPhoto.src=x.target.result}
-r.readAsDataURL(f)
+/* PHOTO UPLOAD */
+
+document.getElementById("photoUpload").onchange=e=>{
+const file=e.target.files[0]
+if(!file)return
+const reader=new FileReader()
+reader.onload=x=>{
+document.getElementById("cardPhoto").src=x.target.result
+}
+reader.readAsDataURL(file)
 }
 
-badgeUpload.onchange=e=>{
-const f=e.target.files[0]
-if(!f)return
-const r=new FileReader()
-r.onload=x=>{cardBadge.src=x.target.result}
-r.readAsDataURL(f)
+/* BADGE UPLOAD */
+
+document.getElementById("badgeUpload").onchange=e=>{
+const file=e.target.files[0]
+if(!file)return
+const reader=new FileReader()
+reader.onload=x=>{
+document.getElementById("cardBadge").src=x.target.result
 }
+reader.readAsDataURL(file)
+}
+
+/* DRAG PHOTO */
 
 interact('.photo').draggable({
 listeners:{
 move(event){
 let x=(parseFloat(event.target.getAttribute('data-x'))||0)+event.dx
 let y=(parseFloat(event.target.getAttribute('data-y'))||0)+event.dy
+
 event.target.style.transform=`translate(${x}px,${y}px)`
 event.target.setAttribute('data-x',x)
 event.target.setAttribute('data-y',y)
@@ -385,13 +397,17 @@ event.target.setAttribute('data-y',y)
 }
 })
 
+/* DOWNLOAD */
+
 function downloadCard(){
-html2canvas(card,{scale:2,useCORS:true}).then(canvas=>{
+
+html2canvas(document.getElementById("card"),{scale:2}).then(canvas=>{
 const link=document.createElement("a")
 link.download="police_id_card.png"
-link.href=canvas.toDataURL("image/png")
+link.href=canvas.toDataURL()
 link.click()
 })
+
 }
 
 </script>
