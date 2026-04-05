@@ -10,7 +10,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 
@@ -66,7 +66,7 @@ box-shadow:0 10px 40px rgba(0,0,0,.7);
 overflow:hidden
 }
 
-/* HOLOGRAM */
+/* HOLOGRAM OVERLAY */
 
 .hologram{
 position:absolute;
@@ -74,14 +74,34 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:
-linear-gradient(45deg,
+background:linear-gradient(45deg,
 rgba(255,0,0,0.1),
 rgba(0,255,255,0.1),
 rgba(255,255,0,0.1));
 mix-blend-mode:overlay;
-pointer-events:none;
-opacity:.35
+opacity:.35;
+pointer-events:none
+}
+
+/* RAINBOW SEAL */
+
+.holo-seal{
+position:absolute;
+right:40px;
+top:90px;
+width:90px;
+height:90px;
+border-radius:50%;
+background:conic-gradient(
+red,orange,yellow,green,cyan,blue,purple,red);
+animation:spin 6s linear infinite;
+opacity:.5;
+mix-blend-mode:overlay
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
 }
 
 /* SCRATCHES */
@@ -94,8 +114,6 @@ background:url("https://www.transparenttextures.com/patterns/scratched-metal.png
 opacity:.15;
 pointer-events:none
 }
-
-/* WORN CARD */
 
 .worn-card{
 filter:contrast(95%) brightness(95%);
@@ -123,16 +141,7 @@ position:absolute;
 left:40px;
 bottom:80px;
 width:120px;
-filter:drop-shadow(0 3px 3px rgba(0,0,0,.6));
-}
-
-.badge::after{
-content:"";
-position:absolute;
-width:100%;
-height:100%;
-background:linear-gradient(45deg,rgba(255,255,255,.5),transparent);
-mix-blend-mode:overlay
+filter:drop-shadow(0 3px 3px rgba(0,0,0,.6))
 }
 
 .top-title{
@@ -170,7 +179,7 @@ font-size:14px
 
 .bottom-info{
 position:absolute;
-bottom:60px;
+bottom:90px;
 left:40px;
 font-size:13px
 }
@@ -199,6 +208,20 @@ bottom:20px;
 left:320px;
 font-size:14px;
 letter-spacing:3px
+}
+
+/* SIGNATURE STRIP */
+
+.signature-strip{
+position:absolute;
+bottom:60px;
+right:40px;
+width:220px;
+text-align:center;
+border-top:2px solid #222;
+padding-top:5px;
+font-family:'Great Vibes',cursive;
+font-size:24px
 }
 
 .footer{
@@ -266,11 +289,11 @@ margin-bottom:30px
 
 <div class="hologram"></div>
 <div class="scratches"></div>
+<div class="holo-seal"></div>
 
 <div class="top-title" id="cardDept">LOS SANTOS POLICE DEPARTMENT</div>
 
 <img id="cardPhoto" class="photo">
-
 <img id="cardBadge" class="badge"
 src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Police_badge.svg/512px-Police_badge.svg.png">
 
@@ -291,6 +314,10 @@ src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Police_badge.svg/
 
 <div class="barcode"></div>
 <div class="barcode-id" id="barcodeID">000000000</div>
+
+<div class="signature-strip">
+Chief David Budd
+</div>
 
 <div class="footer">LOS SANTOS</div>
 
@@ -369,31 +396,21 @@ card.style.color="#222"
 
 }
 
-/* PHOTO UPLOAD */
-
 photoUpload.onchange=e=>{
 const f=e.target.files[0]
 if(!f)return
 const r=new FileReader()
-r.onload=x=>{
-cardPhoto.src=x.target.result
-}
+r.onload=x=>{cardPhoto.src=x.target.result}
 r.readAsDataURL(f)
 }
-
-/* BADGE UPLOAD */
 
 badgeUpload.onchange=e=>{
 const f=e.target.files[0]
 if(!f)return
 const r=new FileReader()
-r.onload=x=>{
-cardBadge.src=x.target.result
-}
+r.onload=x=>{cardBadge.src=x.target.result}
 r.readAsDataURL(f)
 }
-
-/* DRAG + RESIZE PHOTO */
 
 interact('.photo')
 .draggable({
@@ -418,12 +435,22 @@ target.style.height=event.rect.height+'px'
 
 function downloadCard(){
 
-html2canvas(document.getElementById("card")).then(canvas=>{
+const card=document.getElementById("card")
+const hologram=document.querySelector(".hologram")
+const scratches=document.querySelector(".scratches")
 
-const a=document.createElement("a")
-a.download="card.png"
-a.href=canvas.toDataURL()
-a.click()
+if(hologram) hologram.style.display="none"
+if(scratches) scratches.style.display="none"
+
+html2canvas(card,{scale:2,useCORS:true}).then(canvas=>{
+
+const link=document.createElement("a")
+link.download="police_id_card.png"
+link.href=canvas.toDataURL("image/png")
+link.click()
+
+if(hologram) hologram.style.display="block"
+if(scratches) scratches.style.display="block"
 
 })
 
