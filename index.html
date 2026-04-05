@@ -10,7 +10,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Great+Vibes&family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -68,7 +68,7 @@ box-shadow:0 10px 40px rgba(0,0,0,.7);
 overflow:hidden
 }
 
-/* FAINT HOLOGRAM BACKGROUND */
+/* FAINT HOLOGRAM */
 
 .hologram-bg{
 position:absolute;
@@ -76,14 +76,11 @@ width:120%;
 height:120%;
 left:-10%;
 top:-10%;
-
-background:
-linear-gradient(120deg,
+background:linear-gradient(120deg,
 rgba(255,0,0,.05),
 rgba(255,255,0,.05),
 rgba(0,255,255,.05),
 rgba(0,0,255,.05));
-
 mix-blend-mode:overlay;
 animation:holoMove 12s linear infinite;
 pointer-events:none
@@ -105,8 +102,6 @@ background:url("https://www.transparenttextures.com/patterns/scratched-metal.png
 opacity:.10;
 pointer-events:none
 }
-
-/* WORN CARD */
 
 .worn-card{
 filter:contrast(92%) brightness(92%);
@@ -134,85 +129,62 @@ position:absolute;
 left:40px;
 bottom:80px;
 width:120px;
-
-filter:
-drop-shadow(0 3px 3px rgba(0,0,0,.6))
-contrast(95%)
-brightness(95%);
-
+filter:drop-shadow(0 3px 3px rgba(0,0,0,.6))
 }
 
-/* BADGE METAL SHINE */
-
-.badge::after{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-
-background:linear-gradient(
-120deg,
-rgba(255,255,255,.35),
-rgba(255,255,255,0),
-rgba(255,255,255,.35)
-);
-
-mix-blend-mode:overlay;
-opacity:.35
-}
-
-/* BADGE WORN EFFECT */
-
-.worn-card .badge{
-filter:
-grayscale(.1)
-contrast(.9)
-brightness(.85)
-drop-shadow(0 3px 3px rgba(0,0,0,.7));
-}
-
-/* TEXT */
+/* POLICE STYLE TEXT */
 
 .top-title{
 text-align:center;
+font-family:'Oswald',sans-serif;
 font-weight:700;
-letter-spacing:5px
+letter-spacing:4px;
+font-size:22px
 }
 
 .main-info{
 position:absolute;
 left:220px;
-top:100px
+top:95px
 }
 
 .main-info h1{
 margin:0;
-font-size:36px
+font-family:'Oswald',sans-serif;
+font-size:40px;
+font-weight:700;
+letter-spacing:1px
 }
 
 .main-info h2{
-margin:5px 0;
-font-size:20px;
-color:#444
+margin:4px 0;
+font-family:'Oswald',sans-serif;
+font-size:22px;
+font-weight:600
 }
 
 .callsign{
-font-weight:600;
-letter-spacing:2px
+font-family:'Oswald',sans-serif;
+font-weight:700;
+letter-spacing:3px;
+font-size:18px
 }
 
 .extra{
-margin-top:10px;
-font-size:14px
+margin-top:8px;
+font-size:15px;
+font-weight:600
 }
+
+/* MOVED CONTACT INFO */
 
 .bottom-info{
 position:absolute;
-bottom:90px;
-left:40px;
-font-size:13px
+bottom:100px;
+right:40px;
+text-align:right;
+font-size:14px;
+font-weight:600
 }
 
 /* BARCODE */
@@ -223,15 +195,12 @@ bottom:20px;
 left:40px;
 height:40px;
 width:260px;
-
-background:
-repeating-linear-gradient(
+background:repeating-linear-gradient(
 90deg,
 #000,
 #000 2px,
 #fff 2px,
-#fff 4px
-)
+#fff 4px)
 }
 
 .barcode-id{
@@ -368,8 +337,8 @@ ids.forEach(id=>{
 document.getElementById(id).addEventListener("input",update)
 })
 
-document.getElementById("dept").addEventListener("change",update)
-document.getElementById("theme").addEventListener("change",update)
+dept.onchange=update
+theme.onchange=update
 
 function update(){
 
@@ -385,29 +354,6 @@ cardEmail.innerText=email.value?"Email: "+email.value:""
 cardDept.innerText=dept.value
 
 barcodeID.innerText=(badgeNum.value||"0000")+"-"+Math.floor(Math.random()*9999)
-
-const themeVal=theme.value
-const card=document.getElementById("card")
-
-card.classList.remove("worn-card")
-
-if(themeVal==="dark"){
-card.style.background="#333"
-card.style.color="#fff"
-}
-else if(themeVal==="blue"){
-card.style.background="#1e2f4d"
-card.style.color="#fff"
-}
-else if(themeVal==="worn"){
-card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)"
-card.style.color="#222"
-card.classList.add("worn-card")
-}
-else{
-card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)"
-card.style.color="#222"
-}
 
 }
 
@@ -427,8 +373,7 @@ r.onload=x=>{cardBadge.src=x.target.result}
 r.readAsDataURL(f)
 }
 
-interact('.photo')
-.draggable({
+interact('.photo').draggable({
 listeners:{
 move(event){
 let x=(parseFloat(event.target.getAttribute('data-x'))||0)+event.dx
@@ -439,26 +384,14 @@ event.target.setAttribute('data-y',y)
 }
 }
 })
-.resizable({
-edges:{left:true,right:true,bottom:true,top:true}
-})
-.on('resizemove',event=>{
-let target=event.target
-target.style.width=event.rect.width+'px'
-target.style.height=event.rect.height+'px'
-})
 
 function downloadCard(){
-
-const card=document.getElementById("card")
-
 html2canvas(card,{scale:2,useCORS:true}).then(canvas=>{
 const link=document.createElement("a")
 link.download="police_id_card.png"
 link.href=canvas.toDataURL("image/png")
 link.click()
 })
-
 }
 
 </script>
