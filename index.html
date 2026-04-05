@@ -54,6 +54,8 @@ background:#1f1f1f;
 color:white
 }
 
+/* CARD */
+
 .card{
 width:740px;
 height:420px;
@@ -66,42 +68,31 @@ box-shadow:0 10px 40px rgba(0,0,0,.7);
 overflow:hidden
 }
 
-/* HOLOGRAM OVERLAY */
+/* FAINT HOLOGRAM BACKGROUND */
 
-.hologram{
+.hologram-bg{
 position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(45deg,
-rgba(255,0,0,0.1),
-rgba(0,255,255,0.1),
-rgba(255,255,0,0.1));
+width:120%;
+height:120%;
+left:-10%;
+top:-10%;
+
+background:
+linear-gradient(120deg,
+rgba(255,0,0,.05),
+rgba(255,255,0,.05),
+rgba(0,255,255,.05),
+rgba(0,0,255,.05));
+
 mix-blend-mode:overlay;
-opacity:.35;
+animation:holoMove 12s linear infinite;
 pointer-events:none
 }
 
-/* RAINBOW SEAL */
-
-.holo-seal{
-position:absolute;
-right:40px;
-top:90px;
-width:90px;
-height:90px;
-border-radius:50%;
-background:conic-gradient(
-red,orange,yellow,green,cyan,blue,purple,red);
-animation:spin 6s linear infinite;
-opacity:.5;
-mix-blend-mode:overlay
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
+@keyframes holoMove{
+0%{transform:translateX(-10%)}
+50%{transform:translateX(10%)}
+100%{transform:translateX(-10%)}
 }
 
 /* SCRATCHES */
@@ -111,13 +102,15 @@ position:absolute;
 width:100%;
 height:100%;
 background:url("https://www.transparenttextures.com/patterns/scratched-metal.png");
-opacity:.15;
+opacity:.10;
 pointer-events:none
 }
 
+/* WORN CARD */
+
 .worn-card{
-filter:contrast(95%) brightness(95%);
-transform:rotate(-1deg)
+filter:contrast(92%) brightness(92%);
+transform:rotate(-0.8deg)
 }
 
 /* PHOTO */
@@ -141,8 +134,46 @@ position:absolute;
 left:40px;
 bottom:80px;
 width:120px;
-filter:drop-shadow(0 3px 3px rgba(0,0,0,.6))
+
+filter:
+drop-shadow(0 3px 3px rgba(0,0,0,.6))
+contrast(95%)
+brightness(95%);
+
 }
+
+/* BADGE METAL SHINE */
+
+.badge::after{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+background:linear-gradient(
+120deg,
+rgba(255,255,255,.35),
+rgba(255,255,255,0),
+rgba(255,255,255,.35)
+);
+
+mix-blend-mode:overlay;
+opacity:.35
+}
+
+/* BADGE WORN EFFECT */
+
+.worn-card .badge{
+filter:
+grayscale(.1)
+contrast(.9)
+brightness(.85)
+drop-shadow(0 3px 3px rgba(0,0,0,.7));
+}
+
+/* TEXT */
 
 .top-title{
 text-align:center;
@@ -192,6 +223,7 @@ bottom:20px;
 left:40px;
 height:40px;
 width:260px;
+
 background:
 repeating-linear-gradient(
 90deg,
@@ -210,7 +242,7 @@ font-size:14px;
 letter-spacing:3px
 }
 
-/* SIGNATURE STRIP */
+/* SIGNATURE */
 
 .signature-strip{
 position:absolute;
@@ -287,9 +319,8 @@ margin-bottom:30px
 
 <div class="card" id="card">
 
-<div class="hologram"></div>
+<div class="hologram-bg"></div>
 <div class="scratches"></div>
-<div class="holo-seal"></div>
 
 <div class="top-title" id="cardDept">LOS SANTOS POLICE DEPARTMENT</div>
 
@@ -342,49 +373,33 @@ document.getElementById("theme").addEventListener("change",update)
 
 function update(){
 
-document.getElementById("cardName").innerText=
-document.getElementById("name").value||"John Doe"
+cardName.innerText=name.value||"John Doe"
+cardRank.innerText=rank.value||"Officer"
+cardCallsign.innerText=callsign.value||"6-M-10"
+cardBadgeNum.innerText="Badge: "+(badgeNum.value||"0000")
+cardAddress.innerText=address.value||"Mission Row"
 
-document.getElementById("cardRank").innerText=
-document.getElementById("rank").value||"Officer"
+cardCell.innerText=cell.value?"Cell: "+cell.value:""
+cardEmail.innerText=email.value?"Email: "+email.value:""
 
-document.getElementById("cardCallsign").innerText=
-document.getElementById("callsign").value||"6-M-10"
+cardDept.innerText=dept.value
 
-document.getElementById("cardBadgeNum").innerText=
-"Badge: "+(document.getElementById("badgeNum").value||"0000")
+barcodeID.innerText=(badgeNum.value||"0000")+"-"+Math.floor(Math.random()*9999)
 
-document.getElementById("cardAddress").innerText=
-document.getElementById("address").value||"Mission Row"
-
-document.getElementById("cardCell").innerText=
-document.getElementById("cell").value?
-"Cell: "+document.getElementById("cell").value:""
-
-document.getElementById("cardEmail").innerText=
-document.getElementById("email").value?
-"Email: "+document.getElementById("email").value:""
-
-document.getElementById("cardDept").innerText=
-document.getElementById("dept").value
-
-document.getElementById("barcodeID").innerText=
-(document.getElementById("badgeNum").value||"0000")+"-"+Math.floor(Math.random()*9999)
-
-const theme=document.getElementById("theme").value
+const themeVal=theme.value
 const card=document.getElementById("card")
 
 card.classList.remove("worn-card")
 
-if(theme==="dark"){
+if(themeVal==="dark"){
 card.style.background="#333"
 card.style.color="#fff"
 }
-else if(theme==="blue"){
+else if(themeVal==="blue"){
 card.style.background="#1e2f4d"
 card.style.color="#fff"
 }
-else if(theme==="worn"){
+else if(themeVal==="worn"){
 card.style.background="linear-gradient(135deg,#e8e4dc,#d6d1c7)"
 card.style.color="#222"
 card.classList.add("worn-card")
@@ -436,22 +451,12 @@ target.style.height=event.rect.height+'px'
 function downloadCard(){
 
 const card=document.getElementById("card")
-const hologram=document.querySelector(".hologram")
-const scratches=document.querySelector(".scratches")
-
-if(hologram) hologram.style.display="none"
-if(scratches) scratches.style.display="none"
 
 html2canvas(card,{scale:2,useCORS:true}).then(canvas=>{
-
 const link=document.createElement("a")
 link.download="police_id_card.png"
 link.href=canvas.toDataURL("image/png")
 link.click()
-
-if(hologram) hologram.style.display="block"
-if(scratches) scratches.style.display="block"
-
 })
 
 }
